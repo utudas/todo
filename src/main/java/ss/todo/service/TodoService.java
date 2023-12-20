@@ -26,6 +26,14 @@ public class TodoService implements ITodoService {
     }
 
 
+    @Override
+    public TodoResponseDto getTodoById(Long todoId) {
+        TodoResponseDto todoResponseDto = todoDao.getTodoById(todoId);
+
+        return todoResponseDto;
+    }
+
+
     
 
 }

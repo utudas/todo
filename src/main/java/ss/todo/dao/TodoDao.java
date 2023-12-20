@@ -1,7 +1,7 @@
 package ss.todo.dao;
 
 import java.util.Objects;
-
+import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 import lombok.AllArgsConstructor;
@@ -26,6 +26,21 @@ public class TodoDao implements ITodoDao {
           todoEntity = todoRepository.save(todoEntity);
 
         return modelMapper.map(todoEntity, TodoResponseDto.class);
+    }
+
+    @Override
+    public TodoResponseDto getTodoById(Long todoId) {
+      
+      Optional<TodoEntity> todoEntity = todoRepository.findById(todoId);
+
+      Optional<TodoResponseDto> todoResponseDto = todoEntity.map(todoEntityObject -> {
+        return modelMapper.map(todoEntityObject, TodoResponseDto.class);
+      });
+      
+      if(!todoResponseDto.isEmpty())
+        return todoResponseDto.get();
+
+      return null;
     }
 
 }

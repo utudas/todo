@@ -2,6 +2,8 @@ package ss.todo.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,18 @@ public class TodoController {
 
       return new ResponseEntity(todoResponseDto, HttpStatus.CREATED);
     }
+
+
+    @GetMapping("/{todoId}")
+    public ResponseEntity<Object> getTodo(@PathVariable("todoId") Long todoId) {
+
+      TodoResponseDto todoResponseDto = todoService.getTodoById(todoId);
+
+      if(Objects.isNull(todoResponseDto))
+        return new ResponseEntity("Todo with ID "+todoId+" not found", HttpStatus.NOT_FOUND);
+
+      return new ResponseEntity(todoResponseDto, HttpStatus.FOUND);
+   }
 
 
 }
