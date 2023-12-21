@@ -1,8 +1,11 @@
 package ss.todo.dao;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 import lombok.AllArgsConstructor;
 import ss.todo.dto.TodoRequestDto;
@@ -41,6 +44,18 @@ public class TodoDao implements ITodoDao {
         return todoResponseDto.get();
 
       return null;
+    }
+
+    @Override
+    public List<TodoResponseDto> getAllTodo() {
+      Iterable<TodoEntity> allTodoList = todoRepository.findAll();
+      return Streamable.of(allTodoList).toList().stream().map(todoEntity -> modelMapper.map(todoEntity, TodoResponseDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TodoResponseDto> getAllNotDoneTodo() {
+      List<TodoEntity> notDonetodoList = todoRepository.findAllNotDoneTodo();
+      return Streamable.of(notDonetodoList).toList().stream().map(todoEntity -> modelMapper.map(todoEntity, TodoResponseDto.class)).collect(Collectors.toList());
     }
 
 }

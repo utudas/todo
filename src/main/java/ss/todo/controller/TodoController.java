@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;
@@ -45,6 +47,18 @@ public class TodoController {
         return new ResponseEntity("Todo with ID "+todoId+" not found", HttpStatus.NOT_FOUND);
 
       return new ResponseEntity(todoResponseDto, HttpStatus.FOUND);
+   }
+
+
+   @GetMapping(value = {"", "/status/{allTodoFetchCondition}"})
+    public ResponseEntity<Object> getConditionalTodo(@PathVariable(value = "allTodoFetchCondition", required = false) String allTodoFetchCondition) {
+
+      List<TodoResponseDto> TodoResponse = todoService.getConditionalTodo(allTodoFetchCondition);
+
+      if(TodoResponse.isEmpty())
+        return new ResponseEntity("There are no Todo", HttpStatus.NOT_FOUND);
+
+      return new ResponseEntity(TodoResponse, HttpStatus.FOUND);
    }
 
 

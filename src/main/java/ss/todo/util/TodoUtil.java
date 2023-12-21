@@ -9,10 +9,13 @@ import ss.todo.dto.TodoResponseDto;
 @Component
 public class TodoUtil {
 
-    public TodoRequestDto buildTodoRequest(TodoRequestDto todoRequestDto) {
+    public TodoRequestDto buildTodoRequest(TodoRequestDto todoRequestDto, String allTodoFetchCondition) {
 
       if(Objects.isNull(todoRequestDto.getVersion()))
         todoRequestDto.setVersion(TodoConstant.DEFAULT_API_VERSION);
+
+      if(Objects.nonNull(allTodoFetchCondition))
+        todoRequestDto.setTodoFetchCondition(true);
 
       return todoRequestDto;
     }

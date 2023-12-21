@@ -1,5 +1,6 @@
 package ss.todo.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ss.todo.dao.ITodoDao;
@@ -18,13 +19,12 @@ public class TodoService implements ITodoService {
     @Override
     public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) {
 
-      todoRequestDto = todoUtil.buildTodoRequest(todoRequestDto);
+      todoRequestDto = todoUtil.buildTodoRequest(todoRequestDto, null);
       TodoResponseDto todoResponseDto = todoDao.createTodo(todoRequestDto);
       todoResponseDto = todoUtil.buildTodoResponse(todoResponseDto);
 
       return todoResponseDto;
     }
-
 
     @Override
     public TodoResponseDto getTodoById(Long todoId) {
@@ -33,7 +33,20 @@ public class TodoService implements ITodoService {
         return todoResponseDto;
     }
 
+    @Override
+    public List<TodoResponseDto> getConditionalTodo(String allTodoFetchCondition) {
 
+      TodoRequestDto todoRequestDto = new TodoRequestDto();
+      todoRequestDto = todoUtil.buildTodoRequest(todoRequestDto, allTodoFetchCondition);
+
+      if(todoRequestDto.isTodoFetchCondition()) {
+        return todoDao.getAllTodo();
+      }
+      
+      return todoDao.getAllNotDoneTodo();
+    }
+
+    
     
 
 }
