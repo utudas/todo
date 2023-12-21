@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface TodoRepository extends CrudRepository<TodoEntity, Long> {
 
-    @Query("SELECT t FROM TodoEntity t WHERE t.status=NOT_DONE")
+    @Query("SELECT todo FROM TodoEntity todo WHERE todo.status=NOT_DONE")
     List<TodoEntity> findAllNotDoneTodo();
-
 }

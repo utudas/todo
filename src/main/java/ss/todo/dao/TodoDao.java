@@ -58,4 +58,17 @@ public class TodoDao implements ITodoDao {
       return Streamable.of(notDonetodoList).toList().stream().map(todoEntity -> modelMapper.map(todoEntity, TodoResponseDto.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto) {
+
+      if(todoRepository.existsById(todoRequestDto.getId())) {
+        TodoEntity todoEntity = todoRepository.findById(todoRequestDto.getId()).get();
+        todoEntity.setDescription(todoRequestDto.getDescription());
+        todoEntity = todoRepository.save(todoEntity);
+        return modelMapper.map(todoEntity, TodoResponseDto.class);
+      }
+ 
+      return null;
+    }
+
 }

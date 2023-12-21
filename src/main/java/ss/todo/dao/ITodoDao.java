@@ -9,4 +9,5 @@ public interface ITodoDao {
     public TodoResponseDto getTodoById(Long todoId);
     public List<TodoResponseDto> getAllTodo();
     public List<TodoResponseDto> getAllNotDoneTodo();
+    public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto);
 }

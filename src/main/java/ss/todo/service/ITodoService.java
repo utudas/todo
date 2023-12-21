@@ -8,4 +8,5 @@ public interface ITodoService {
     public TodoResponseDto createTodo(TodoRequestDto todoRequestDto);
     public TodoResponseDto getTodoById(Long todoId);
     public List<TodoResponseDto> getConditionalTodo(String allTodoFetchCondition);
+    public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto);
 }

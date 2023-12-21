@@ -1,7 +1,6 @@
 package ss.todo.util;
 
 import java.util.Objects;
-
 import org.springframework.stereotype.Component;
 import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;

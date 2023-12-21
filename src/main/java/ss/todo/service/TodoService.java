@@ -46,6 +46,15 @@ public class TodoService implements ITodoService {
       return todoDao.getAllNotDoneTodo();
     }
 
+    @Override
+    public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto) {
+      todoRequestDto = todoUtil.buildTodoRequest(todoRequestDto, null);
+      TodoResponseDto todoResponseDto = todoDao.updateTodo(todoRequestDto);
+      todoResponseDto = todoUtil.buildTodoResponse(todoResponseDto);
+
+      return todoResponseDto;
+    }
+
     
     
 

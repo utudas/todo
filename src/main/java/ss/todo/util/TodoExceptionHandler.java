@@ -42,4 +42,10 @@ public class TodoExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(value = WrongParameterException.class)
+  public ResponseEntity<String> handleWrongParameterException(WrongParameterException ex) {
+    
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
 }
