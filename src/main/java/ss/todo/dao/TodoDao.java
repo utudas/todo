@@ -29,6 +29,7 @@ public class TodoDao implements ITodoDao {
         if(Objects.isNull(todoEntity))
           throw new NullPointerException(TodoConstant.NULL_TODO_OBJECT);
         
+          todoEntity.setCreationDate(new Date(System.currentTimeMillis()));
           todoEntity = todoRepository.save(todoEntity);
 
         return modelMapper.map(todoEntity, TodoResponseDto.class);
@@ -74,8 +75,11 @@ public class TodoDao implements ITodoDao {
           throw new PastDueItemUpdateException(TodoConstant.PAST_DUE_ITEM_UPDATE);
         }
 
-        if(!todoRequestDto.getDescription().equals(todoEntity.getDescription())) {
-          todoEntity.setDescription(todoRequestDto.getDescription());
+        if(!todoEntity.getDescription().equals(todoRequestDto.getDescription())) {
+          if(!(todoRequestDto.getDescription() == null)) {
+            todoEntity.setDescription(todoRequestDto.getDescription());
+          }
+          
           dbUpdate = true;
         }
 
