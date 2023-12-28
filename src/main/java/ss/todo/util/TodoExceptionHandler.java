@@ -48,4 +48,10 @@ public class TodoExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(value = PastDueItemUpdateException.class)
+  public ResponseEntity<String> handlePastDueItemUpdateException(PastDueItemUpdateException ex) {
+    
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
 }

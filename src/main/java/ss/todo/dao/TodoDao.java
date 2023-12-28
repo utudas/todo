@@ -1,5 +1,6 @@
 package ss.todo.dao;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import lombok.AllArgsConstructor;
 import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;
 import ss.todo.model.TodoEntity;
+import ss.todo.util.PastDueItemUpdateException;
+import ss.todo.util.Status;
 import ss.todo.util.TodoConstant;
 
 @Repository
@@ -61,14 +64,51 @@ public class TodoDao implements ITodoDao {
     @Override
     public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto) {
 
+      boolean dbUpdate = false;
+
       if(todoRepository.existsById(todoRequestDto.getId())) {
+
         TodoEntity todoEntity = todoRepository.findById(todoRequestDto.getId()).get();
-        todoEntity.setDescription(todoRequestDto.getDescription());
-        todoEntity = todoRepository.save(todoEntity);
-        return modelMapper.map(todoEntity, TodoResponseDto.class);
+
+        if(todoEntity.getStatus() == Status.PAST_DUE) {
+          throw new PastDueItemUpdateException(TodoConstant.PAST_DUE_ITEM_UPDATE);
+        }
+
+        if(!todoRequestDto.getDescription().equals(todoEntity.getDescription())) {
+          todoEntity.setDescription(todoRequestDto.getDescription());
+          dbUpdate = true;
+        }
+
+        if((todoRequestDto.getStatus() == Status.DONE) && !(todoEntity.getStatus() == Status.DONE)) {
+          todoEntity.setStatus(Status.DONE);
+          todoEntity.setDoneDate(new Date(System.currentTimeMillis()));
+          dbUpdate = true;
+        }
+
+        if((todoRequestDto.getStatus() == Status.NOT_DONE) && !(todoEntity.getStatus() == Status.NOT_DONE)) {
+          todoEntity.setStatus(Status.NOT_DONE);
+          todoEntity.setDoneDate(null);
+          dbUpdate = true;
+        }
+
+        if(dbUpdate) {
+          return modelMapper.map(saveEntity(todoEntity), TodoResponseDto.class);
+        }
+
+        if(todoRequestDto.isPastDueUpdateFlag()) {
+          todoEntity.setStatus(todoRequestDto.getStatus());
+          saveEntity(todoEntity);
+        }
+        
       }
  
       return null;
+    }
+
+
+    private TodoEntity saveEntity(TodoEntity todoEntity) {
+      todoEntity = todoRepository.save(todoEntity);
+      return todoEntity;
     }
 
 }

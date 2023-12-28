@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WrongParameterException extends RuntimeException {
+public class PastDueItemUpdateException extends RuntimeException {
     private final String message;
+
 }

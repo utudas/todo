@@ -60,7 +60,7 @@ public class TodoController {
       List<TodoResponseDto> TodoResponse = todoService.getConditionalTodo(allTodoFetchCondition);
 
       if(TodoResponse.isEmpty())
-        return new ResponseEntity("There are no Todo", HttpStatus.NOT_FOUND);
+        return new ResponseEntity(TodoConstant.EMPTY_TODO, HttpStatus.NOT_FOUND);
 
       return new ResponseEntity(TodoResponse, HttpStatus.FOUND);
    }

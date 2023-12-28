@@ -17,4 +17,5 @@ public class TodoRequestDto {
     private Date doneDate;
     private String version;
     private boolean todoFetchCondition;
+    private boolean pastDueUpdateFlag;
 }
