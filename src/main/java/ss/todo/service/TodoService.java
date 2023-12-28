@@ -1,11 +1,14 @@
 package ss.todo.service;
 
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ss.todo.dao.ITodoDao;
 import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;
+import ss.todo.util.PastDueDateException;
+import ss.todo.util.TodoConstant;
 import ss.todo.util.TodoUtil;
 
 
@@ -18,6 +21,10 @@ public class TodoService implements ITodoService {
 
     @Override
     public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) {
+
+      if(!todoRequestDto.getDueDate().after(new java.sql.Date(Calendar.getInstance().getTime().getTime()))) {
+        throw new PastDueDateException(TodoConstant.PAST_DUE_DATE);
+      }
 
       todoRequestDto = todoUtil.buildTodoRequest(todoRequestDto, null);
       TodoResponseDto todoResponseDto = todoDao.createTodo(todoRequestDto);

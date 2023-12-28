@@ -54,4 +54,10 @@ public class TodoExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(value = PastDueDateException.class)
+  public ResponseEntity<String> handlePastDueDateException(PastDueDateException ex) {
+    
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
 }
