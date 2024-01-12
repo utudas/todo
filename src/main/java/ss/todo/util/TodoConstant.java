@@ -13,4 +13,7 @@ public class TodoConstant {
   public static final String PAST_DUE_ITEM_UPDATE = "Past Due item updation is restricted";
   public static final String EMPTY_TODO = "There are no Todo";
   public static final String PAST_DUE_DATE = "Due date can't be past date";
+
+  public static final String TEST_DESCRIPTION = "Cook Tomorrow";
+  public static final Long TEST_ID = 8L;
 }

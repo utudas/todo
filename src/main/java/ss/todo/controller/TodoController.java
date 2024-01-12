@@ -17,6 +17,7 @@ import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;
 import ss.todo.service.ITodoService;
 import ss.todo.util.TodoConstant;
+import ss.todo.util.TodoUtil;
 import ss.todo.util.WrongParameterException;
 
 
@@ -26,16 +27,17 @@ import ss.todo.util.WrongParameterException;
 public class TodoController {
 
     private final ITodoService todoService;
+    private final TodoUtil todoUtil;
 
     @PostMapping
     public ResponseEntity<Object> createTodo(@RequestBody TodoRequestDto todoRequestDto) throws HttpMessageNotReadableException {
       
-      if(Objects.nonNull(todoRequestDto.getId()))
+      if(todoUtil.nonNull(todoRequestDto.getId()))
         throw new WrongParameterException(TodoConstant.ID_PARAM_IN_CREATE_TODO);
 
       TodoResponseDto todoResponseDto = todoService.createTodo(todoRequestDto);
 
-      if(Objects.isNull(todoResponseDto))
+      if(todoUtil.isNull(todoResponseDto))
         throw new NullPointerException(TodoConstant.TODO_NOT_SAVED);
 
       return new ResponseEntity(todoResponseDto, HttpStatus.CREATED);

@@ -24,6 +24,16 @@ public class TodoUtil {
       return todoResponseDto;
     }
 
+    public boolean isNull(Object object) {
+      return object == null;
+    }
+
+    public boolean nonNull(Object object) {
+      return object != null;
+    }
+
     
+
+
 
 }
