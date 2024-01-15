@@ -1,0 +1,8 @@
+version: '3'
+services:
+  todo:
+    build: .
+    container_name: 'todo-app'
+    restart: always
+    ports:
+      - '8084:8084'
