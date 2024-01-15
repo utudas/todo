@@ -32,6 +32,10 @@ public class TodoUtil {
       return object != null;
     }
 
+    public CustomErrorMessage getCustomErrorMessage(int errorCode, String errorMessage) {
+      return new CustomErrorMessage(errorCode, errorMessage);
+    }
+
     
 
 
