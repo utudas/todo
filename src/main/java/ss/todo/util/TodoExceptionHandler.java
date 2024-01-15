@@ -7,7 +7,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -27,8 +26,8 @@ public class TodoExceptionHandler {
     return new ResponseEntity<>(todoUtil.getCustomErrorMessage(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(value = NoResourceFoundException.class)
-  public ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex) {
+  @ExceptionHandler(value = ResourceNotFoundException.class)
+  public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
     return new ResponseEntity<>(todoUtil.getCustomErrorMessage(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
   }
 
@@ -44,7 +43,6 @@ public class TodoExceptionHandler {
 
   @ExceptionHandler(value = WrongParameterException.class)
   public ResponseEntity<Object> handleWrongParameterException(WrongParameterException ex) {
-    //return new ResponseEntity<>(new CustomErrorMessage(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
     return new ResponseEntity<>(todoUtil.getCustomErrorMessage(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
   }
 

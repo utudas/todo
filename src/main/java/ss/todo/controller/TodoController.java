@@ -10,15 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import ss.todo.dto.TodoRequestDto;
-import ss.todo.dto.TodoResponseDto;
 import ss.todo.service.ITodoService;
-import ss.todo.util.TodoConstant;
-import ss.todo.util.TodoUtil;
-import ss.todo.util.WrongParameterException;
 
 
 @RestController
@@ -27,59 +21,25 @@ import ss.todo.util.WrongParameterException;
 public class TodoController {
 
     private final ITodoService todoService;
-    private final TodoUtil todoUtil;
 
     @PostMapping
     public ResponseEntity<Object> createTodo(@RequestBody TodoRequestDto todoRequestDto) throws HttpMessageNotReadableException {
-      
-      if(todoUtil.nonNull(todoRequestDto.getId()))
-        throw new WrongParameterException(TodoConstant.ID_PARAM_IN_CREATE_TODO);
-
-      TodoResponseDto todoResponseDto = todoService.createTodo(todoRequestDto);
-
-      if(todoUtil.isNull(todoResponseDto))
-        throw new NullPointerException(TodoConstant.TODO_NOT_SAVED);
-
-      return new ResponseEntity(todoResponseDto, HttpStatus.CREATED);
+      return new ResponseEntity(todoService.createTodo(todoRequestDto), HttpStatus.CREATED);
     }
-
 
     @GetMapping("/{todoId}")
     public ResponseEntity<Object> getTodo(@PathVariable("todoId") Long todoId) {
-
-      TodoResponseDto todoResponseDto = todoService.getTodoById(todoId);
-
-      if(Objects.isNull(todoResponseDto))
-        return new ResponseEntity("Todo with ID "+todoId+" not found", HttpStatus.NOT_FOUND);
-
-      return new ResponseEntity(todoResponseDto, HttpStatus.FOUND);
+      return new ResponseEntity(todoService.getTodoById(todoId), HttpStatus.OK);
    }
-
 
    @GetMapping(value = {"", "/status/{allTodoFetchCondition}"})
     public ResponseEntity<Object> getConditionalTodo(@PathVariable(value = "allTodoFetchCondition", required = false) String allTodoFetchCondition) {
-
-      List<TodoResponseDto> TodoResponse = todoService.getConditionalTodo(allTodoFetchCondition);
-
-      if(TodoResponse.isEmpty())
-        return new ResponseEntity(TodoConstant.EMPTY_TODO, HttpStatus.NOT_FOUND);
-
-      return new ResponseEntity(TodoResponse, HttpStatus.FOUND);
+      return new ResponseEntity(todoService.getConditionalTodo(allTodoFetchCondition), HttpStatus.OK);
    }
 
    @PutMapping
     public ResponseEntity<Object> updateTodo(@RequestBody TodoRequestDto todoRequestDto) {
-
-      if(Objects.isNull(todoRequestDto.getId()))
-        throw new WrongParameterException(TodoConstant.ID_PARAM_MISSING_IN_UPDATE_TODO);
-
-      TodoResponseDto todoResponseDto = todoService.updateTodo(todoRequestDto);
-
-      if(Objects.isNull(todoResponseDto))
-        return new ResponseEntity("Todo with ID "+todoRequestDto.getId()+" not found", HttpStatus.NOT_FOUND);
-
-      return new ResponseEntity(todoResponseDto, HttpStatus.OK);
+      return new ResponseEntity(todoService.updateTodo(todoRequestDto), HttpStatus.OK);
    }
-
 
 }
