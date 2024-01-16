@@ -2,6 +2,7 @@ package ss.todo.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -18,6 +19,7 @@ import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;
 import ss.todo.util.TodoConstant;
 import ss.todo.util.TodoUtil;
+import ss.todo.util.WrongParameterException;
 import ss.todo.util.TodoTestHelper;
 
 
@@ -88,18 +90,9 @@ public class TodoServiceTest {
     }
 
     @Test
-    public void testUpdateTodo() {
-      TodoResponseDto todoResponseDto;
-      
-      when(todoUtil.buildTodoRequest(any(TodoRequestDto.class), eq(null))).thenReturn(TodoTestHelper.getTodoRequestDto());
-      when(todoUtil.buildTodoResponse(any(TodoResponseDto.class))).thenReturn(TodoTestHelper.getTodoResponseDto());
-      when(todoDao.updateTodo(any(TodoRequestDto.class))).thenReturn(TodoTestHelper.getTodoResponseDto());
-      
-      todoResponseDto = todoService.updateTodo(TodoTestHelper.getTodoRequestDto());
+    public void testUpdateTodoWhenIDParamIsNotPassed() {
+      when(todoUtil.isNull(any())).thenReturn(true);
 
-      assertNotNull(todoResponseDto);
-      assertEquals(todoResponseDto.getId(), TodoConstant.TEST_ID);
-      assertEquals(todoResponseDto.getDescription(), TodoConstant.TEST_DESCRIPTION);
+       assertThrows(WrongParameterException.class, () -> todoService.updateTodo(TodoTestHelper.getTodoRequestDto()));
     }
-
 }

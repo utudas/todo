@@ -75,13 +75,13 @@ public class TodoService implements ITodoService {
 
     @Override
     public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto) {
-      if(Objects.isNull(todoRequestDto.getId()))
+      if(todoUtil.isNull(todoRequestDto.getId()))
         throw new WrongParameterException(TodoConstant.ID_PARAM_MISSING_IN_UPDATE_TODO);
 
       todoRequestDto = todoUtil.buildTodoRequest(todoRequestDto, null);
       TodoResponseDto todoResponseDto = todoDao.updateTodo(todoRequestDto);
 
-      if(Objects.isNull(todoResponseDto))
+      if(todoUtil.isNull(todoResponseDto))
         throw new ResourceNotFoundException(TodoConstant.TODO_NOT_FOUND + todoRequestDto.getId());
 
       todoResponseDto = todoUtil.buildTodoResponse(todoResponseDto);
