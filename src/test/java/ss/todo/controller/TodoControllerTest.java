@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ss.todo.dto.TodoRequestDto;
 import ss.todo.dto.TodoResponseDto;
 import ss.todo.service.ITodoService;
+import ss.todo.util.ResourceNotFoundException;
 import ss.todo.util.TodoExceptionHandler;
 import ss.todo.util.TodoTestHelper;
 import ss.todo.util.TodoUtil;
@@ -39,7 +40,7 @@ public class TodoControllerTest {
   void setUp() {
     mockMvc = MockMvcBuilders
               .standaloneSetup(todoController)
-              .setControllerAdvice(new TodoExceptionHandler())
+              .setControllerAdvice(new TodoExceptionHandler(todoUtil))
               .build();
   }
 
@@ -61,7 +62,7 @@ public class TodoControllerTest {
   @Test
   public void createTodoWhenIdParamIsPassedInRequest() throws JsonProcessingException, Exception {
 
-    when(todoUtil.nonNull(any())).thenReturn(true);
+    when(todoService.createTodo(any(TodoRequestDto.class))).thenThrow(WrongParameterException.class);
     
      mockMvc
     .perform(
@@ -75,9 +76,7 @@ public class TodoControllerTest {
   @Test
   public void createTodoWhenNullResponseReceivedFromService() throws JsonProcessingException, Exception {
 
-    when(todoUtil.nonNull(any())).thenReturn(false);
-    when(todoService.createTodo(any(TodoRequestDto.class))).thenReturn(null);
-    when(todoUtil.isNull(null)).thenReturn(true);
+    when(todoService.createTodo(any(TodoRequestDto.class))).thenThrow(NullPointerException.class);
     
      mockMvc
     .perform(
