@@ -22,6 +22,16 @@ public class TodoService implements ITodoService {
     private final TodoUtil todoUtil;
     private final ITodoDao todoDao;
 
+    /**
+   * Creates todo for valid request
+   * @author Uttam Das
+   * @param TodoRequestDto 
+   * @exception HttpMessageNotReadableException. This exception is raised when API request doesn't conform TodoRequestDto.
+   * @throws WrongParameterException. This exception is raised when ID param is supplied in TodoRequestDto.
+   * @throws NullPointerException. This exception is raised when todo is not saved in db for technical failure.
+   * @return TodoResponseDto
+   */
+
     @Override
     public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) {
 
@@ -43,6 +53,14 @@ public class TodoService implements ITodoService {
       return todoResponseDto;
     }
 
+    /**
+   * Retrieves existing todo by using todoId
+   * @author Uttam Das
+   * @param todoId
+   * @throws ResourceNotFoundException. This exception is raised when todo with supplied id doesn't exist in db.
+   * @return TodoResponseDto
+   */
+
     @Override
     public TodoResponseDto getTodoById(Long todoId) {
         TodoResponseDto todoResponseDto = todoDao.getTodoById(todoId);
@@ -52,6 +70,14 @@ public class TodoService implements ITodoService {
 
         return todoResponseDto;
     }
+
+     /**
+   * Retrieves todos based on fetching condition set or not
+   * @author Uttam Das
+   * @param allTodoFetchCondition
+   * @throws ResourceNotFoundException. This exception is raised when no todo exists in db.
+   * @return List<TodoResponseDto>
+   */
 
     @Override
     public List<TodoResponseDto> getConditionalTodo(String allTodoFetchCondition) {
@@ -72,6 +98,15 @@ public class TodoService implements ITodoService {
       
       return todoResponse;
     }
+
+    /**
+   * Updates todo
+   * @author Uttam Das
+   * @param TodoRequestDto
+   * @throws WrongParameterException. This exception is raised when ID param is not supplied in TodoRequestDto.
+   * @throws ResourceNotFoundException. This exception is raised when no todo exists in db for the supplied todo id in TodoRequestDto.
+   * @return TodoResponseDto
+   */
 
     @Override
     public TodoResponseDto updateTodo(TodoRequestDto todoRequestDto) {
